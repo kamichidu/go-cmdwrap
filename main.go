@@ -43,7 +43,7 @@ func run(in io.Reader, out io.Writer, errOut io.Writer, args []string) int {
 	}
 
 	if useDotenv {
-		if err := godotenv.Load(); err != nil {
+		if err := godotenv.Load(); err != nil && !os.IsNotExist(err) {
 			log.Printf("Unable to load .env file: %s", err)
 			return 1
 		}
