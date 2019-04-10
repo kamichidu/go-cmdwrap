@@ -1,4 +1,0 @@
-package: github.com/kamichidu/go-cmdwrap
-import:
-- package: github.com/joho/godotenv
-  version: ^1.1.0
