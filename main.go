@@ -15,13 +15,13 @@ import (
 
 type envVars []string
 
-func (self *envVars) Set(v string) error {
-	*self = append(*self, v)
+func (l *envVars) Set(v string) error {
+	*l = append(*l, v)
 	return nil
 }
 
-func (self *envVars) String() string {
-	return fmt.Sprintf("%v", []string(*self))
+func (l *envVars) String() string {
+	return fmt.Sprintf("%v", []string(*l))
 }
 
 func run(in io.Reader, out io.Writer, errOut io.Writer, args []string) int {
