@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"os/signal"
 	"path/filepath"
 
 	"github.com/joho/godotenv"
@@ -65,7 +66,24 @@ func run(in io.Reader, out io.Writer, errOut io.Writer, args []string) int {
 	cmd.Stdout = out
 	cmd.Stderr = errOut
 	cmd.Env = append(os.Environ(), (*env)...)
-	if err := cmd.Run(); err != nil {
+	if err := cmd.Start(); err != nil {
+		log.Print(err)
+		return 1
+	}
+	sigCh := make(chan os.Signal)
+	signal.Notify(sigCh)
+	defer func() {
+		if !cmd.ProcessState.Exited() {
+			cmd.Process.Kill()
+		}
+	}()
+	go func() {
+		defer signal.Stop(sigCh)
+		for sig := range sigCh {
+			cmd.Process.Signal(sig)
+		}
+	}()
+	if err := cmd.Wait(); err != nil {
 		log.Print(err)
 		return 1
 	}
