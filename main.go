@@ -31,7 +31,7 @@ func run(in io.Reader, out io.Writer, errOut io.Writer, args []string) int {
 		useDotenv bool
 		listEnvs  bool
 	)
-	flags.Var(env, "e", "Environment variables")
+	flags.Var(env, "e", "Environment variables with `NAME=VALUE` form")
 	flags.BoolVar(&useDotenv, "r", false, "Read enviroment variables from .env")
 	flags.BoolVar(&listEnvs, "l", false, "List environment variables")
 	if err := flags.Parse(args[1:]); err != nil {
